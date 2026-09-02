@@ -1,0 +1,12 @@
+/* Card — 1px border, no shadow, minimal radius */
+.card {
+  background: var(--color-surface);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-md);
+  padding: var(--spacing-5);
+}
+
+.card--no-pad {
+  padding: 0;
+  overflow: hidden;
+}

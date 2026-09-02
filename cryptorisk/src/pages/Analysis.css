@@ -1,0 +1,90 @@
+.analysis-updated {
+  display: flex; flex-direction: column; align-items: flex-end; gap: 2px;
+  font-size: var(--font-size-xs); color: var(--color-text-muted);
+}
+.analysis-updated strong { color: var(--color-text-primary); font-size: var(--font-size-sm); }
+
+.analysis-top {
+  display: grid;
+  grid-template-columns: 300px 1fr;
+  gap: var(--spacing-5);
+}
+
+.analysis-risk-card { display: flex; flex-direction: column; align-items: center; }
+.analysis-risk-note {
+  font-size: var(--font-size-xs);
+  color: var(--color-text-secondary);
+  line-height: 1.6;
+  text-align: center;
+  margin-top: var(--spacing-3);
+}
+
+/* Historical performance table */
+.hist-perf-table { width: 100%; border-collapse: collapse; }
+.hist-perf-table thead th {
+  padding: 7px 12px;
+  font-size: 10px;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  color: var(--color-text-muted);
+  border-bottom: 1px solid var(--color-border);
+  background: var(--color-bg);
+  text-align: left;
+}
+.hist-perf-table tbody tr { border-bottom: 1px solid var(--color-border); }
+.hist-perf-table tbody tr:last-child { border-bottom: none; }
+.hist-perf-table tbody tr:hover { background: var(--color-bg); }
+.hist-perf-table td { padding: 10px 12px; font-size: var(--font-size-sm); }
+
+/* Mid grid */
+.analysis-mid { display: grid; grid-template-columns: 1fr 1fr; gap: var(--spacing-5); }
+
+/* Volatility legend */
+.vol-legend {
+  display: flex; gap: var(--spacing-4); margin-top: var(--spacing-4);
+  padding-top: var(--spacing-3); border-top: 1px solid var(--color-border); flex-wrap: wrap;
+}
+.vol-legend__item { display: flex; align-items: center; gap: 5px; font-size: var(--font-size-xs); color: var(--color-text-secondary); }
+.vol-legend__dot { width: 7px; height: 7px; border-radius: 2px; }
+.vol-legend__item--high .vol-legend__dot { background: var(--color-danger); }
+.vol-legend__item--med  .vol-legend__dot { background: var(--color-warning); }
+.vol-legend__item--low  .vol-legend__dot { background: var(--color-success); }
+
+/* Recommendations */
+.recommendations { display: flex; flex-direction: column; }
+.rec-item {
+  display: grid;
+  grid-template-columns: 72px 1fr auto;
+  align-items: start;
+  gap: var(--spacing-3);
+  padding: var(--spacing-4) 0;
+  border-bottom: 1px solid var(--color-border);
+}
+.rec-item:last-child { border-bottom: none; }
+.rec-item__priority { padding-top: 2px; }
+.rec-item__content { display: flex; flex-direction: column; gap: 3px; }
+.rec-item__title { font-size: var(--font-size-sm); font-weight: 600; }
+.rec-item__desc { font-size: var(--font-size-xs); color: var(--color-text-secondary); line-height: 1.5; }
+.rec-item__action {
+  background: none;
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-md);
+  padding: 4px 10px;
+  font-size: var(--font-size-xs);
+  font-weight: 500;
+  color: var(--color-accent);
+  cursor: pointer;
+  white-space: nowrap;
+  font-family: var(--font-family);
+  transition: background var(--transition-fast), border-color var(--transition-fast);
+}
+.rec-item__action:hover { background: var(--color-accent-light); border-color: var(--color-accent); }
+
+@media (max-width: 900px) {
+  .analysis-top { grid-template-columns: 1fr; }
+  .analysis-mid { grid-template-columns: 1fr; }
+}
+@media (max-width: 600px) {
+  .rec-item { grid-template-columns: 1fr; }
+}

@@ -1,0 +1,171 @@
+/* ─── Global Design System — Light Restyle ───────────────────────────────── */
+
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap');
+
+:root {
+  /* ── Accent — single flat color used sparingly (buttons, active, key numbers) */
+  --color-accent:       #1C6B4A;
+  --color-accent-hover: #174f38;
+  --color-accent-light: #eaf3ef;
+
+  /* ── Semantic colors — muted, low-saturation */
+  --color-success:       #2d7a4f;
+  --color-success-light: #eef6f2;
+  --color-danger:        #b94040;
+  --color-danger-light:  #faf0f0;
+  --color-warning:       #a06b1e;
+  --color-warning-light: #fdf5e8;
+
+  /* ── Neutrals — off-white base, no stark white */
+  --color-bg:            #F7F7F5;
+  --color-surface:       #FFFFFF;
+  --color-border:        #E5E5E5;
+  --color-border-strong: #CACACA;
+
+  /* ── Text */
+  --color-text-primary:   #1A1A1A;
+  --color-text-secondary: #5C5C5C;
+  --color-text-muted:     #9A9A9A;
+  --color-text-inverse:   #FFFFFF;
+
+  /* ── Shadows — removed heavy shadows; use borders instead */
+  --shadow-xs: none;
+  --shadow-sm: none;
+  --shadow-md: none;
+  --shadow-lg: 0 4px 16px rgba(0,0,0,0.07);
+
+  /* ── Spacing — tightened */
+  --spacing-1:  4px;
+  --spacing-2:  8px;
+  --spacing-3:  10px;
+  --spacing-4:  14px;
+  --spacing-5:  18px;
+  --spacing-6:  22px;
+  --spacing-8:  28px;
+  --spacing-10: 36px;
+  --spacing-12: 44px;
+  --spacing-16: 56px;
+
+  /* ── Radius — restrained, not bubbly */
+  --radius-sm:   3px;
+  --radius-md:   6px;
+  --radius-lg:   6px;
+  --radius-xl:   8px;
+  --radius-full: 9999px;
+
+  /* ── Typography — tighter scale */
+  --font-family:     'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+  --font-size-xs:    11px;
+  --font-size-sm:    12px;
+  --font-size-base:  13px;
+  --font-size-md:    14px;
+  --font-size-lg:    16px;
+  --font-size-xl:    20px;
+  --font-size-2xl:   24px;
+  --font-size-3xl:   30px;
+  --font-size-4xl:   40px;
+
+  /* ── Transitions */
+  --transition-fast: 100ms ease;
+  --transition-base: 160ms ease;
+  --transition-slow: 240ms ease;
+
+  /* ── Layout */
+  --sidebar-width:       220px;
+  --navbar-height:       54px;
+  --content-max-width: 1240px;
+
+  /* Legacy aliases — keeps existing components working without JSX changes */
+  --color-primary:       var(--color-accent);
+  --color-primary-dark:  var(--color-accent-hover);
+  --color-primary-light: var(--color-accent-light);
+}
+
+/* ── Reset ─────────────────────────────────────────────────────────────────── */
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+html { scroll-behavior: smooth; -webkit-font-smoothing: antialiased; }
+
+body {
+  font-family: var(--font-family);
+  font-size: var(--font-size-base);
+  color: var(--color-text-primary);
+  background: var(--color-bg);
+  line-height: 1.5;
+  min-height: 100vh;
+}
+
+a { color: var(--color-accent); text-decoration: none; }
+a:hover { text-decoration: underline; }
+
+img, svg { display: block; max-width: 100%; }
+
+h1, h2, h3, h4, h5, h6 {
+  font-weight: 600;
+  line-height: 1.3;
+  color: var(--color-text-primary);
+}
+
+/* ── Utilities ──────────────────────────────────────────────────────────────── */
+.text-success   { color: var(--color-success) !important; }
+.text-danger    { color: var(--color-danger)  !important; }
+.text-muted     { color: var(--color-text-muted) !important; }
+.text-secondary { color: var(--color-text-secondary) !important; }
+.text-primary   { color: var(--color-accent) !important; }
+.text-right     { text-align: right; }
+.text-center    { text-align: center; }
+
+.fw-500 { font-weight: 500; }
+.fw-600 { font-weight: 600; }
+.fw-700 { font-weight: 700; }
+
+.sr-only {
+  position: absolute; width: 1px; height: 1px;
+  padding: 0; margin: -1px; overflow: hidden; clip: rect(0,0,0,0);
+  white-space: nowrap; border: 0;
+}
+
+::-webkit-scrollbar { width: 5px; height: 5px; }
+::-webkit-scrollbar-track { background: transparent; }
+::-webkit-scrollbar-thumb { background: var(--color-border-strong); border-radius: 3px; }
+::-webkit-scrollbar-thumb:hover { background: var(--color-text-muted); }
+
+/* ── Dark Mode — overrides via [data-theme="dark"] on <html> ────────────── */
+[data-theme="dark"] {
+  --color-accent:       #2ecc8e;   /* lighter green so it's visible on dark bg */
+  --color-accent-hover: #27b57e;
+  --color-accent-light: #0d2e20;
+
+  --color-success:       #3dba71;
+  --color-success-light: #0a2318;
+  --color-danger:        #e06c6c;
+  --color-danger-light:  #2a1010;
+  --color-warning:       #d4a040;
+  --color-warning-light: #2a1e08;
+
+  /* Backgrounds */
+  --color-bg:      #111214;
+  --color-surface: #1A1C1E;
+  --color-border:  #2C2E32;
+  --color-border-strong: #3E4146;
+
+  /* Text */
+  --color-text-primary:   #E8E8E8;
+  --color-text-secondary: #9A9EA6;
+  --color-text-muted:     #5C6070;
+  --color-text-inverse:   #111214;
+}
+
+/* ── Smooth theme transition ─────────────────────────────────────────────── */
+*,
+*::before,
+*::after {
+  transition-property: background-color, border-color, color;
+  transition-duration: 180ms;
+  transition-timing-function: ease;
+}
+/* Don't animate things that shouldn't transition */
+button, a, input, select, textarea {
+  transition-property: background-color, border-color, color, box-shadow, opacity;
+}
+

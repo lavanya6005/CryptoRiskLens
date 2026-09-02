@@ -1,0 +1,59 @@
+/* StatCard — border only, no shadow, no colored-icon-in-circle */
+.stat-card {
+  background: var(--color-surface);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-md);
+  padding: var(--spacing-4) var(--spacing-5);
+  /* no hover shadow */
+}
+
+/* Left accent bar replaces icon-in-circle */
+.stat-card--danger  { border-left: 2px solid var(--color-danger); }
+.stat-card--success { border-left: 2px solid var(--color-success); }
+.stat-card--primary { border-left: 2px solid var(--color-accent); }
+.stat-card--warning { border-left: 2px solid var(--color-warning); }
+
+.stat-card__header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: var(--spacing-2);
+}
+.stat-card__title {
+  font-size: var(--font-size-xs);
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  color: var(--color-text-muted);
+}
+
+/* Icon — plain, no colored circle background */
+.stat-card__icon {
+  display: flex;
+  align-items: center;
+  color: var(--color-text-muted);
+}
+
+/* Value — clear but not hero-size */
+.stat-card__value {
+  font-size: var(--font-size-xl);
+  font-weight: 700;
+  color: var(--color-text-primary);
+  letter-spacing: -0.5px;
+  line-height: 1;
+  margin-bottom: 6px;
+}
+
+.stat-card__change {
+  display: inline-flex;
+  align-items: center;
+  gap: 2px;
+  font-size: var(--font-size-xs);
+  font-weight: 600;
+  padding: 1px 5px;
+  border-radius: var(--radius-sm);
+}
+.stat-card__change.positive { color: var(--color-success); background: var(--color-success-light); }
+.stat-card__change.negative { color: var(--color-danger);  background: var(--color-danger-light);  }
+
+.stat-card__subtitle { font-size: var(--font-size-xs); color: var(--color-text-muted); margin-top: 4px; }

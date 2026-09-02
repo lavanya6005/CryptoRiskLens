@@ -1,0 +1,49 @@
+.risk-panel { display: flex; flex-direction: column; gap: var(--spacing-4); }
+
+.risk-panel__factor { display: flex; flex-direction: column; gap: 5px; }
+
+.risk-panel__factor-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+.risk-panel__factor-label { font-size: var(--font-size-sm); font-weight: 500; color: var(--color-text-primary); }
+.risk-panel__factor-badge {
+  font-size: 10px;
+  font-weight: 600;
+  padding: 1px 6px;
+  border-radius: var(--radius-sm);  /* square, not pill */
+}
+
+.risk-panel__bar {
+  height: 4px;
+  background: var(--color-border);
+  border-radius: 2px;
+  overflow: hidden;
+}
+.risk-panel__bar-fill {
+  height: 100%;
+  border-radius: 2px;
+  transition: width 0.5s ease;
+}
+
+.risk-panel__factor-desc { font-size: var(--font-size-xs); color: var(--color-text-muted); line-height: 1.5; }
+
+/* Recommendation — muted amber, no neon */
+.risk-panel__recommendation {
+  background: var(--color-warning-light);
+  border: 1px solid #e8d09a;
+  border-radius: var(--radius-md);
+  padding: var(--spacing-3) var(--spacing-4);
+  margin-top: var(--spacing-2);
+}
+.risk-panel__rec-header {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  font-size: var(--font-size-xs);
+  font-weight: 600;
+  color: var(--color-warning);
+  margin-bottom: 4px;
+}
+.risk-panel__rec-text { font-size: var(--font-size-xs); color: var(--color-text-secondary); line-height: 1.6; }

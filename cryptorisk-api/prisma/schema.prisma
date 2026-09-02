@@ -1,0 +1,97 @@
+// This is your Prisma schema file.
+// Learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+// ─── User ────────────────────────────────────────────────────────────────────
+
+model User {
+  id           Int            @id @default(autoincrement())
+  email        String         @unique
+  passwordHash String
+  name         String
+  role         String         @default("user")   // "user" | "admin"
+  createdAt    DateTime       @default(now())
+
+  portfolios    Portfolio[]
+  // FIX #5: Cascade delete — deleting a User removes all their RefreshTokens
+  refreshTokens RefreshToken[]
+
+  @@map("users")
+}
+
+// ─── RefreshToken ─────────────────────────────────────────────────────────────
+
+model RefreshToken {
+  id        Int      @id @default(autoincrement())
+  token     String   @unique
+  expiresAt DateTime
+  revoked   Boolean  @default(false)
+  createdAt DateTime @default(now())
+
+  userId    Int
+  // FIX #5: onDelete: Cascade — user deletion removes their tokens automatically
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@index([userId])
+  @@map("refresh_tokens")
+}
+
+// ─── Portfolio ───────────────────────────────────────────────────────────────
+
+model Portfolio {
+  id        Int       @id @default(autoincrement())
+  name      String
+  createdAt DateTime  @default(now())
+
+  userId    Int
+  user      User      @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  // FIX #5: Cascade — deleting a Portfolio removes all its Holdings
+  holdings  Holding[]
+
+  @@index([userId])
+  @@map("portfolios")
+}
+
+// ─── Holding ─────────────────────────────────────────────────────────────────
+
+model Holding {
+  id          Int      @id @default(autoincrement())
+  coinId      String   // CoinGecko coin id, e.g. "bitcoin"
+  // FIX #1: Decimal(20,8) — supports crypto quantities up to 8 decimal places
+  // (BTC satoshi precision) without floating-point rounding errors.
+  quantity    Decimal  @db.Decimal(20, 8)
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  portfolioId Int
+  // FIX #5: onDelete: Cascade — Portfolio deletion removes all Holdings
+  portfolio   Portfolio @relation(fields: [portfolioId], references: [id], onDelete: Cascade)
+
+  @@unique([portfolioId, coinId])
+  @@index([portfolioId])
+  @@map("holdings")
+}
+
+// ─── PriceSnapshot ───────────────────────────────────────────────────────────
+
+model PriceSnapshot {
+  id     Int      @id @default(autoincrement())
+  coinId String
+  date   DateTime @db.Date
+  // FIX #1: Decimal(20,8) — prices in USD can be very small (e.g. SHIB at
+  // $0.00001234) or very large; Decimal avoids float precision loss in both cases.
+  price  Decimal  @db.Decimal(20, 8)
+
+  @@unique([coinId, date])
+  @@index([coinId, date])
+  @@map("price_snapshots")
+}

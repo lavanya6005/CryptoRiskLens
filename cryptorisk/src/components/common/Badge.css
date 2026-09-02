@@ -1,0 +1,17 @@
+/* Badge — muted, low-saturation colors */
+.badge {
+  display: inline-flex;
+  align-items: center;
+  padding: 1px 7px;
+  border-radius: var(--radius-sm);
+  font-size: 10px;
+  font-weight: 600;
+  letter-spacing: 0.03em;
+  text-transform: uppercase;
+}
+
+.badge--success  { background: var(--color-success-light); color: var(--color-success); }
+.badge--danger   { background: var(--color-danger-light);  color: var(--color-danger);  }
+.badge--warning  { background: var(--color-warning-light); color: var(--color-warning); }
+.badge--primary  { background: var(--color-accent-light);  color: var(--color-accent);  }
+.badge--neutral  { background: var(--color-bg); color: var(--color-text-secondary); border: 1px solid var(--color-border); }

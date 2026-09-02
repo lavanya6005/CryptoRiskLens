@@ -1,0 +1,25 @@
+.pie-chart { display: flex; flex-direction: column; gap: var(--spacing-3); }
+
+.pie-chart__title { font-size: var(--font-size-sm); font-weight: 600; color: var(--color-text-primary); }
+
+.pie-chart__body {
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-5);
+  flex-wrap: wrap;
+}
+
+.pie-chart__svg { width: 160px; height: 160px; flex-shrink: 0; }
+
+.pie-chart__legend { display: flex; flex-direction: column; gap: 7px; flex: 1; min-width: 110px; }
+
+.pie-chart__legend-item {
+  display: flex;
+  align-items: center;
+  gap: 7px;
+  font-size: var(--font-size-xs);
+}
+/* Square swatch instead of circle dot */
+.pie-chart__dot { width: 8px; height: 8px; border-radius: 2px; flex-shrink: 0; }
+.pie-chart__legend-name { flex: 1; color: var(--color-text-secondary); }
+.pie-chart__legend-pct { font-weight: 600; color: var(--color-text-primary); font-variant-numeric: tabular-nums; }

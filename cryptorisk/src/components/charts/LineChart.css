@@ -1,0 +1,20 @@
+.line-chart { display: flex; flex-direction: column; gap: var(--spacing-3); }
+
+.line-chart__header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+.line-chart__title { font-size: var(--font-size-sm); font-weight: 600; color: var(--color-text-primary); }
+
+/* Muted change badge, square corners */
+.line-chart__change {
+  font-size: var(--font-size-xs);
+  font-weight: 600;
+  padding: 1px 6px;
+  border-radius: var(--radius-sm);
+}
+.line-chart__change.positive { color: var(--color-success); background: var(--color-success-light); }
+.line-chart__change.negative { color: var(--color-danger);  background: var(--color-danger-light);  }
+
+.line-chart__svg { width: 100%; height: auto; overflow: visible; }

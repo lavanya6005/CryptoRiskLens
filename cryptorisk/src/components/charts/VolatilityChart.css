@@ -1,0 +1,25 @@
+.vol-chart { display: flex; flex-direction: column; gap: var(--spacing-3); }
+
+.vol-chart__title { font-size: var(--font-size-sm); font-weight: 600; color: var(--color-text-primary); }
+
+.vol-chart__bars { display: flex; flex-direction: column; gap: 8px; }
+
+.vol-chart__row {
+  display: grid;
+  grid-template-columns: 38px 1fr 38px;
+  align-items: center;
+  gap: 8px;
+}
+
+.vol-chart__label { font-size: var(--font-size-xs); font-weight: 500; color: var(--color-text-secondary); }
+
+.vol-chart__bar-wrap {
+  height: 5px;
+  background: var(--color-border);
+  border-radius: 2px;
+  overflow: hidden;
+}
+/* Bar uses muted colors — set via inline style in the component */
+.vol-chart__bar { height: 100%; border-radius: 2px; transition: width 0.5s ease; }
+
+.vol-chart__value { font-size: var(--font-size-xs); font-weight: 600; color: var(--color-text-secondary); text-align: right; }
