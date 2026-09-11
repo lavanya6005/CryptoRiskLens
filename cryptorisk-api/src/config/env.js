@@ -18,6 +18,9 @@ const envSchema = z.object({
   RISK_FREE_RATE:         z.coerce.number().default(0.05),
   // Used only by the seed script — never stored anywhere except .env
   ADMIN_SEED_PASSWORD:    z.string().optional(),
+  // Deployed frontend URL (e.g. Vercel). Added to CORS allowlist alongside CLIENT_ORIGIN.
+  // No trailing slash. Example: https://cryptorisk.vercel.app
+  FRONTEND_URL:           z.string().url().optional(),
 });
 
 

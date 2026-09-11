@@ -25,9 +25,25 @@ const app = express();
 app.use(helmet());
 
 // ─── CORS ─────────────────────────────────────────────────────────────────────
+// FRONTEND_URL is the deployed Vercel URL (set in Railway env vars).
+// CLIENT_ORIGIN is the legacy local-dev fallback.
+// No trailing slash — must match exactly what the browser sends as Origin.
+const allowedOrigins = [
+  process.env.FRONTEND_URL,   // e.g. https://cryptorisk.vercel.app
+  env.CLIENT_ORIGIN,          // e.g. http://localhost:5173
+].filter(Boolean);            // drop any undefined entries
+
 app.use(cors({
-  origin: env.CLIENT_ORIGIN,
-  credentials: true, // allow cookies (refresh token)
+  origin: (incomingOrigin, callback) => {
+    // Allow requests with no origin (curl, Postman, server-to-server)
+    if (!incomingOrigin) return callback(null, true);
+
+    if (allowedOrigins.includes(incomingOrigin)) {
+      return callback(null, true);
+    }
+    callback(new Error(`CORS: origin '${incomingOrigin}' is not allowed`));
+  },
+  credentials: true,  // required for httpOnly refresh-token cookie
 }));
 
 // ─── Body parsing ─────────────────────────────────────────────────────────────
