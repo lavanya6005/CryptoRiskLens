@@ -1,14 +1,17 @@
 import { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
+import { useAuth } from '../context/AuthContext';
 import Button from '../components/common/Button';
 import Input from '../components/common/Input';
 import './Auth.css';
 
 export default function Register() {
   const navigate = useNavigate();
-  const [form, setForm] = useState({ name: '', email: '', password: '', confirm: '' });
+  const { register } = useAuth();
+  const [form, setForm]     = useState({ name: '', email: '', password: '', confirm: '' });
   const [errors, setErrors] = useState({});
-  const [loading, setLoading] = useState(false);
+  const [apiError, setApiError] = useState('');
+  const [loading, setLoading]   = useState(false);
 
   const validate = () => {
     const errs = {};
@@ -22,15 +25,28 @@ export default function Register() {
     return errs;
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
     const errs = validate();
     if (Object.keys(errs).length) { setErrors(errs); return; }
+
     setLoading(true);
-    setTimeout(() => { setLoading(false); navigate('/dashboard'); }, 1000);
+    setApiError('');
+    try {
+      await register(form.name.trim(), form.email, form.password);
+      navigate('/dashboard', { replace: true });
+    } catch (err) {
+      setApiError(err.message || 'Registration failed. Please try again.');
+    } finally {
+      setLoading(false);
+    }
   };
 
-  const set = (field) => (e) => { setForm({ ...form, [field]: e.target.value }); setErrors({ ...errors, [field]: '' }); };
+  const set = (field) => (e) => {
+    setForm({ ...form, [field]: e.target.value });
+    setErrors({ ...errors, [field]: '' });
+    setApiError('');
+  };
 
   return (
     <div className="auth-page">
@@ -46,7 +62,7 @@ export default function Register() {
         </div>
 
         <form className="auth-form" onSubmit={handleSubmit} noValidate>
-          <Input id="reg-name" label="Full name" placeholder="Alex Johnson" value={form.name} onChange={set('name')} error={errors.name} autoComplete="name" />
+          <Input id="reg-name" label="Full name" placeholder="Your full name" value={form.name} onChange={set('name')} error={errors.name} autoComplete="name" />
           <Input id="reg-email" label="Email address" type="email" placeholder="you@example.com" value={form.email} onChange={set('email')} error={errors.email} autoComplete="email" />
           <div className="auth-row">
             <Input id="reg-pass" label="Password" type="password" placeholder="Min. 8 characters" value={form.password} onChange={set('password')} error={errors.password} autoComplete="new-password" />
@@ -57,6 +73,12 @@ export default function Register() {
             <input type="checkbox" id="terms" required />
             <label htmlFor="terms">I agree to the <a href="#">Terms of Service</a> and <a href="#">Privacy Policy</a></label>
           </div>
+
+          {apiError && (
+            <p style={{ color: 'var(--color-danger)', fontSize: 'var(--font-size-sm)', margin: 0 }}>
+              {apiError}
+            </p>
+          )}
 
           <Button type="submit" fullWidth size="lg" disabled={loading}>
             {loading ? 'Creating account…' : 'Create Account'}
@@ -70,7 +92,7 @@ export default function Register() {
 
       <div className="auth-side">
         <blockquote className="auth-quote">
-          "The risk analysis dashboard is the clearest I've seen. It immediately showed 
+          "The risk analysis dashboard is the clearest I've seen. It immediately showed
           me I was over-exposed to Solana."
         </blockquote>
         <cite className="auth-cite">— James Park, crypto trader</cite>

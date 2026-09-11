@@ -1,38 +1,76 @@
-import { createContext, useContext, useState, useCallback } from 'react';
+import { createContext, useContext, useState, useCallback, useEffect } from 'react';
+import { auth as authApi, token as tokenStore } from '../api/api';
 
 /**
- * AuthContext — stores the logged-in user (id, name, email, role).
+ * AuthContext — single source of truth for the logged-in user.
  *
- * In this demo the user object comes from mockData (currentUser).
- * When the real backend is wired in, call login() with the API response.
- *
- * The admin role check is done in two places:
- *  1. AdminRoute guard (blocks direct URL access)
- *  2. Navbar (hides the Admin link for non-admins — UX only)
+ * user shape: { id, name, email, role }
+ * role drives:
+ *   - Navbar admin link visibility
+ *   - AdminRoute guard
+ *   - Backend requireAdmin middleware (real security)
  */
-import { currentUser } from '../data/mockData';
 
 const AuthContext = createContext(null);
 
 export function AuthProvider({ children }) {
-  // Initialise with the mock user so all existing pages keep working.
-  // Replace this with null + a login() call when the real API is connected.
-  const [user, setUser] = useState(currentUser);
+  const [user, setUser] = useState(null);
+  const [loading, setLoading] = useState(true); // true while hydrating from token
 
-  /**
-   * Call this after a successful API login response.
-   * { id, name, email, role } — role comes from the JWT payload.
-   */
-  const login = useCallback((userData) => {
-    setUser(userData);
+  // On mount: if a token exists in localStorage, decode it to restore the user
+  // session without requiring a full login page reload.
+  useEffect(() => {
+    const t = tokenStore.get();
+    if (t) {
+      try {
+        // Decode JWT payload (base64) — no signature verification needed client-side
+        const payload = JSON.parse(atob(t.split('.')[1]));
+        // Check expiry
+        if (payload.exp && payload.exp * 1000 > Date.now()) {
+          setUser({ id: payload.id, email: payload.email, role: payload.role ?? 'user', name: payload.name ?? payload.email });
+        } else {
+          tokenStore.clear();
+        }
+      } catch {
+        tokenStore.clear();
+      }
+    }
+    setLoading(false);
   }, []);
 
-  const logout = useCallback(() => {
+  /**
+   * login — calls POST /api/auth/login, stores token, sets user.
+   * Returns the user object on success; throws on failure.
+   */
+  const login = useCallback(async (email, password) => {
+    const data = await authApi.login(email, password);
+    tokenStore.set(data.accessToken);
+    setUser(data.user);  // { id, name, email, role }
+    return data.user;
+  }, []);
+
+  /**
+   * register — calls POST /api/auth/register, stores token, sets user.
+   */
+  const register = useCallback(async (name, email, password) => {
+    const data = await authApi.register(name, email, password);
+    tokenStore.set(data.accessToken);
+    setUser(data.user);
+    return data.user;
+  }, []);
+
+  /**
+   * logout — clears token + user state, redirects to login.
+   */
+  const logout = useCallback(async () => {
+    try { await authApi.logout(); } catch { /* ignore */ }
+    tokenStore.clear();
     setUser(null);
+    window.location.href = '/login';
   }, []);
 
   return (
-    <AuthContext.Provider value={{ user, login, logout }}>
+    <AuthContext.Provider value={{ user, loading, login, register, logout }}>
       {children}
     </AuthContext.Provider>
   );
