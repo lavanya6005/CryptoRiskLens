@@ -4,11 +4,7 @@ import { auth as authApi, token as tokenStore } from '../api/api';
 /**
  * AuthContext — single source of truth for the logged-in user.
  *
- * user shape: { id, name, email, role }
- * role drives:
- *   - Navbar admin link visibility
- *   - AdminRoute guard
- *   - Backend requireAdmin middleware (real security)
+ * user shape: { id, name, email }
  */
 
 const AuthContext = createContext(null);
@@ -17,17 +13,15 @@ export function AuthProvider({ children }) {
   const [user, setUser] = useState(null);
   const [loading, setLoading] = useState(true); // true while hydrating from token
 
-  // On mount: if a token exists in localStorage, decode it to restore the user
+  // On mount: if a token exists in localStorage, decode it to restore the
   // session without requiring a full login page reload.
   useEffect(() => {
     const t = tokenStore.get();
     if (t) {
       try {
-        // Decode JWT payload (base64) — no signature verification needed client-side
         const payload = JSON.parse(atob(t.split('.')[1]));
-        // Check expiry
         if (payload.exp && payload.exp * 1000 > Date.now()) {
-          setUser({ id: payload.id, email: payload.email, role: payload.role ?? 'user', name: payload.name ?? payload.email });
+          setUser({ id: payload.id, email: payload.email, name: payload.name ?? payload.email });
         } else {
           tokenStore.clear();
         }
@@ -45,7 +39,7 @@ export function AuthProvider({ children }) {
   const login = useCallback(async (email, password) => {
     const data = await authApi.login(email, password);
     tokenStore.set(data.accessToken);
-    setUser(data.user);  // { id, name, email, role }
+    setUser(data.user);  // { id, name, email }
     return data.user;
   }, []);
 

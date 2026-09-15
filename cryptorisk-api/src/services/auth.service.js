@@ -98,9 +98,9 @@ async function refresh(rawToken) {
   const accessToken = signAccessToken({
     id: stored.user.id,
     email: stored.user.email,
-    role: stored.user.role,
   });
   return { accessToken };
+
 
 }
 
@@ -117,8 +117,7 @@ async function logout(rawToken) {
 // ─── Internal helpers ─────────────────────────────────────────────────────────
 
 async function issueTokens(user) {
-  // Include role so requireAdmin can check it without an extra DB lookup
-  const payload = { id: user.id, email: user.email, role: user.role };
+  const payload = { id: user.id, email: user.email };
   const accessToken = signAccessToken(payload);
   const rawRefreshToken = signRefreshToken(payload);
 
@@ -133,7 +132,7 @@ async function issueTokens(user) {
   return {
     accessToken,
     refreshToken: rawRefreshToken,
-    user: { id: user.id, name: user.name, email: user.email, role: user.role },
+    user: { id: user.id, name: user.name, email: user.email },
   };
 }
 

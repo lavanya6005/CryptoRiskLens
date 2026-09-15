@@ -10,9 +10,9 @@
     "test:watch": "jest --watch",
     "db:migrate": "prisma migrate dev",
     "db:generate": "prisma generate",
-    "db:studio": "prisma studio",
-    "db:seed": "node prisma/seed.js"
+    "db:studio": "prisma studio"
   },
+
 
   "dependencies": {
     "@prisma/client": "^5.14.0",

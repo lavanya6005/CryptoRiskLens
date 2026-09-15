@@ -17,7 +17,6 @@ model User {
   email        String         @unique
   passwordHash String
   name         String
-  role         String         @default("user")   // "user" | "admin"
   createdAt    DateTime       @default(now())
 
   portfolios    Portfolio[]

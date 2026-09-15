@@ -37,10 +37,8 @@ export default function Navbar({ user: userProp }) {
   const navigate = useNavigate();
   const [menuOpen, setMenuOpen] = useState(false);
   const { theme, toggle } = useTheme();
-  // Prefer the AuthContext user (has role); fall back to prop for legacy pages
   const { user: authUser } = useAuth();
   const user = authUser || userProp;
-  const isAdmin = user?.role === 'admin';
 
   return (
     <header className="navbar">
@@ -61,12 +59,6 @@ export default function Navbar({ user: userProp }) {
         <NavLink to="/analysis" className={({ isActive }) => `navbar__link${isActive ? ' active' : ''}`}>
           Analysis
         </NavLink>
-        {/* Admin link — only visible to admin users (UX guard; real guard is AdminRoute + backend) */}
-        {isAdmin && (
-          <NavLink to="/admin" className={({ isActive }) => `navbar__link${isActive ? ' active' : ''}`}>
-            Admin
-          </NavLink>
-        )}
       </nav>
 
 

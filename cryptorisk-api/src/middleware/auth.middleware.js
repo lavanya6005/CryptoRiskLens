@@ -19,8 +19,7 @@ function requireAuth(req, res, next) {
   const token = header.slice(7);
   try {
     const payload = jwt.verify(token, env.JWT_ACCESS_SECRET);
-    // Attach id, email AND role — requireAdmin reads role from here
-    req.user = { id: payload.id, email: payload.email, role: payload.role ?? 'user' };
+    req.user = { id: payload.id, email: payload.email };
     next();
 
   } catch (err) {

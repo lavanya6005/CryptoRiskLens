@@ -16,12 +16,11 @@ const envSchema = z.object({
   COINGECKO_BASE_URL:     z.string().default('https://api.coingecko.com/api/v3'),
   COINGECKO_API_KEY:      z.string().optional().default(''),
   RISK_FREE_RATE:         z.coerce.number().default(0.05),
-  // Used only by the seed script — never stored anywhere except .env
-  ADMIN_SEED_PASSWORD:    z.string().optional(),
   // Deployed frontend URL (e.g. Vercel). Added to CORS allowlist alongside CLIENT_ORIGIN.
   // No trailing slash. Example: https://cryptorisk.vercel.app
   FRONTEND_URL:           z.string().url().optional(),
 });
+
 
 
 const parsed = envSchema.safeParse(process.env);

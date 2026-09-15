@@ -14,7 +14,6 @@ const logger = require('./utils/logger');
 const authRoutes      = require('./routes/auth.routes');
 const portfolioRoutes = require('./routes/portfolio.routes');
 const coinsRoutes     = require('./routes/coins.routes');
-const adminRoutes     = require('./routes/admin.routes');
 
 
 const app = express();
@@ -63,7 +62,6 @@ app.use('/api', apiLimiter);
 app.use('/api/auth',      authRoutes);
 app.use('/api/portfolio', portfolioRoutes);
 app.use('/api/coins',     coinsRoutes);
-app.use('/api/admin',     adminRoutes);   // double-gated: requireAuth + requireAdmin
 
 
 // ─── Health check ─────────────────────────────────────────────────────────────

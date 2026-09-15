@@ -89,11 +89,3 @@ export const coins = {
   history: (coinId) => get(`/api/coins/${coinId}/history`),
 };
 
-// ── Admin endpoints ───────────────────────────────────────────────────────────
-
-export const admin = {
-  users:      ()               => get('/api/admin/users'),
-  stats:      ()               => get('/api/admin/stats'),
-  updateRole: (id, role)       => patch(`/api/admin/users/${id}/role`, { role }),
-  deleteUser: (id)             => del(`/api/admin/users/${id}`),
-};
