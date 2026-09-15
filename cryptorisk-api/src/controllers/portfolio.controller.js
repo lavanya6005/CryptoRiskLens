@@ -42,11 +42,12 @@ async function deletePortfolio(req, res, next) {
 async function addHolding(req, res, next) {
   try {
     const holding = await portfolioService.addHolding(
-      +req.params.id, req.user.id, req.body.coinId, req.body.quantity
+      +req.params.id, req.user.id, req.body.coinId, req.body.quantity, req.body.buyPrice
     );
     res.status(201).json(holding);
   } catch (err) { next(err); }
 }
+
 
 async function updateHolding(req, res, next) {
   try {

@@ -18,7 +18,9 @@ const updatePortfolioSchema = z.object({ name: z.string().min(1).max(200) });
 const addHoldingSchema = z.object({
   coinId:   z.string().min(1).max(100),
   quantity: z.number().positive(),
+  buyPrice: z.number().positive(),   // USD price per coin at time of purchase
 });
+
 const updateHoldingSchema = z.object({ quantity: z.number().positive() });
 
 // Portfolio CRUD

@@ -65,9 +65,12 @@ export default function AddPortfolio() {
     const errs = {};
     if (!form.crypto)       errs.crypto        = 'Please select a cryptocurrency';
     if (!form.quantity || isNaN(form.quantity) || +form.quantity <= 0) errs.quantity = 'Enter a valid quantity';
+    if (!form.purchasePrice || isNaN(form.purchasePrice) || +form.purchasePrice <= 0)
+      errs.purchasePrice = 'Enter the price you paid per coin (required for P&L tracking)';
     if (!form.purchaseDate) errs.purchaseDate  = 'Purchase date is required';
     return errs;
   };
+
 
   const set = (field) => (e) => {
     setForm({ ...form, [field]: e.target.value });
@@ -88,8 +91,11 @@ export default function AddPortfolio() {
     setLoading(true);
     setApiError('');
     try {
-      const coinId = SYMBOL_TO_COINGECKO_ID[form.crypto] || form.crypto.toLowerCase();
-      await portfolioApi.addHolding(portfolioId, coinId, parseFloat(form.quantity));
+      const coinId   = SYMBOL_TO_COINGECKO_ID[form.crypto] || form.crypto.toLowerCase();
+      const quantity = parseFloat(form.quantity);
+      const buyPrice = parseFloat(form.purchasePrice);   // ← what the user paid per coin
+
+      await portfolioApi.addHolding(portfolioId, coinId, quantity, buyPrice);
       setSubmitted(true);
       setTimeout(() => navigate('/portfolio'), 1500);
     } catch (err) {
@@ -97,6 +103,7 @@ export default function AddPortfolio() {
     } finally {
       setLoading(false);
     }
+
   };
 
   if (submitted) {

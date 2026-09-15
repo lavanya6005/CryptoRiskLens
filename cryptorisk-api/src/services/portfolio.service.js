@@ -64,16 +64,17 @@ async function deletePortfolio(portfolioId, userId) {
 
 // ─── Holdings CRUD ────────────────────────────────────────────────────────────
 
-async function addHolding(portfolioId, userId, coinId, quantity) {
+async function addHolding(portfolioId, userId, coinId, quantity, buyPrice) {
   await getOwnedPortfolio(portfolioId, userId);
 
-  // Use upsert: if the coin is already in the portfolio, update quantity
+  // Use upsert: if the coin is already in the portfolio, update quantity + buyPrice
   return prisma.holding.upsert({
-    where: { portfolioId_coinId: { portfolioId, coinId } },
-    update: { quantity },
-    create: { portfolioId, coinId, quantity },
+    where:  { portfolioId_coinId: { portfolioId, coinId } },
+    update: { quantity, buyPrice },
+    create: { portfolioId, coinId, quantity, buyPrice },
   });
 }
+
 
 async function updateHolding(portfolioId, userId, holdingId, quantity) {
   await getOwnedPortfolio(portfolioId, userId);

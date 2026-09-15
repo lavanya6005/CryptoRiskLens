@@ -68,6 +68,9 @@ model Holding {
   // FIX #1: Decimal(20,8) — supports crypto quantities up to 8 decimal places
   // (BTC satoshi precision) without floating-point rounding errors.
   quantity    Decimal  @db.Decimal(20, 8)
+  // Buy price per coin at the time the user added this holding.
+  // Used to calculate P&L. Decimal(20,8) prevents float rounding on micro-cap coins.
+  buyPrice    Decimal  @db.Decimal(20, 8)
   createdAt   DateTime @default(now())
   updatedAt   DateTime @updatedAt
 

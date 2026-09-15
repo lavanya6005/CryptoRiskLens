@@ -72,7 +72,9 @@ export const portfolio = {
   delete:     (id)             => del(`/api/portfolio/${id}`),
 
   // Holdings
-  addHolding:    (id, coinId, quantity) => post(`/api/portfolio/${id}/holdings`, { coinId, quantity }),
+  // Holdings
+  addHolding:    (id, coinId, quantity, buyPrice) => post(`/api/portfolio/${id}/holdings`, { coinId, quantity, buyPrice }),
+
   updateHolding: (id, hId, quantity)   => put(`/api/portfolio/${id}/holdings/${hId}`, { quantity }),
   deleteHolding: (id, hId)             => del(`/api/portfolio/${id}/holdings/${hId}`),
 

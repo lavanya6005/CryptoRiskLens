@@ -54,7 +54,8 @@ export default function Analysis() {
         if (summary?.holdings?.length > 0) {
           try {
             const hist = await coinsApi.history(summary.holdings[0].coinId);
-            if (!cancelled) setHistory(hist || []);
+            // Backend wraps as { coinId, range, prices: [{date, price}] }
+            if (!cancelled) setHistory(hist?.prices || []);
           } catch { /* optional */ }
         }
       } catch (err) {
